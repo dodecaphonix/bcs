@@ -34,13 +34,17 @@ db = influxdb.InfluxDBClient(
 )
 
 
+def format_point(measurement_name, fields, tags=None):
+    return {"measurement": measurement_name, "fields": fields, "tags": tags if tags else {}}
+
+
 def log():
     temp_data = bcs.temps()
     output_data = bcs.outputs(to_data_type=int)
     points = [
-        {'measurement': 'temperatures', 'fields': temp_data['temps'], 'tags': {}},
-        {'measurement': 'setpoints', 'fields': temp_data['setpoints'], 'tags': {}},
-        {'measurement': 'outputs', 'fields': output_data, 'tags': {}},
+        format_point('temperatures', temp_data['temps']),
+        format_point('setpoints', temp_data['setpoints']),
+        format_point('outputs', output_data)
     ]
     db.write_points(points)
     return points
