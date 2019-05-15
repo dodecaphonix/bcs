@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from time import sleep
 
 from influxdb import client as influxdb
