@@ -44,6 +44,9 @@ def log():
     points = [
         format_point('temperatures', temp_data['temps']),
         format_point('setpoints', temp_data['setpoints']),
+        format_point('swings', temp_data['swings']),
+        # summing in daemon because InfluxDB is lame and makes me use Flux for join queries
+        format_point('setpoint_swing_sums', temp_data['setpoint_swing_sums']),
         format_point('outputs', output_data)
     ]
     db.write_points(points)
