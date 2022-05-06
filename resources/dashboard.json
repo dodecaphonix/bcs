@@ -1,4 +1,25 @@
 {
+  "__inputs": [],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "6.1.6"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,57 +36,74 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": null,
   "links": [],
   "panels": [
     {
-      "aliasColors": {
-        "Ambient": "#888888",
-        "Ambient Temperature": "rgb(112, 112, 112)",
-        "Errors": "dark-red",
-        "Glycol Chiller": "dark-blue",
-        "Glycol Chiller Temperature": "dark-blue",
-        "Glycol Output Active": "semi-dark-blue",
-        "Glycol Setpoint": "rgb(26, 24, 110)",
-        "Glycol Temperature Setpoint": "rgb(18, 48, 79)",
-        "setpoints.mean": "light-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "description": "Changed to null values from \"null\" to \"connected\" temporarily",
-      "fill": 0,
       "gridPos": {
-        "h": 10,
-        "w": 24,
+        "h": 4,
+        "w": 9,
         "x": 0,
         "y": 0
       },
-      "id": 3,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
+      "id": 11,
       "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "options": {
+        "maxValue": "80",
+        "minValue": "30",
+        "orientation": "auto",
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "thresholds": [
+          {
+            "color": "dark-red",
+            "index": 0,
+            "value": null
+          },
+          {
+            "color": "dark-blue",
+            "index": 1,
+            "value": 35
+          },
+          {
+            "color": "dark-red",
+            "index": 2,
+            "value": 40
+          },
+          {
+            "color": "dark-green",
+            "index": 3,
+            "value": 45
+          },
+          {
+            "color": "dark-red",
+            "index": 4,
+            "value": 55
+          },
+          {
+            "color": "dark-green",
+            "index": 5,
+            "value": 65
+          },
+          {
+            "color": "dark-red",
+            "index": 6,
+            "value": 75
+          }
+        ],
+        "valueMappings": [],
+        "valueOptions": {
+          "decimals": 1,
+          "prefix": "",
+          "stat": "mean",
+          "suffix": "",
+          "unit": "farenheit"
+        }
+      },
+      "pluginVersion": "6.1.6",
       "targets": [
         {
-          "alias": "Glycol Chiller Temperature",
+          "alias": "",
           "groupBy": [
             {
               "params": [
@@ -80,12 +118,175 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "measurement": "temperatures",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"glycol\"), mean(\"GLYCOL\") FROM \"temperatures\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT \"FERMENTOR 1\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 1"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"FERMENTOR 2\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 2"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"FERMENTOR 3\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 3"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Fermentor Temperatures",
+      "type": "gauge"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 9,
+        "y": 0
+      },
+      "id": 9,
+      "links": [],
+      "options": {
+        "maxValue": "70",
+        "minValue": "0",
+        "orientation": "auto",
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "thresholds": [
+          {
+            "color": "dark-red",
+            "index": 0,
+            "value": null
+          },
+          {
+            "color": "dark-blue",
+            "index": 1,
+            "value": 25
+          },
+          {
+            "color": "dark-red",
+            "index": 2,
+            "value": 35
+          }
+        ],
+        "valueMappings": [],
+        "valueOptions": {
+          "decimals": 1,
+          "prefix": "",
+          "stat": "mean",
+          "suffix": "",
+          "unit": "farenheit"
+        }
+      },
+      "pluginVersion": "6.1.6",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"GLYCOL\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -98,14 +299,92 @@
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "last"
               }
             ]
           ],
           "tags": []
-        },
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Glycol Chiller Temperature",
+      "type": "gauge"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 13,
+        "y": 0
+      },
+      "id": 12,
+      "links": [],
+      "options": {
+        "maxValue": "95",
+        "minValue": "50",
+        "orientation": "auto",
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "thresholds": [
+          {
+            "color": "dark-blue",
+            "index": 0,
+            "value": null
+          },
+          {
+            "color": "semi-dark-blue",
+            "index": 1,
+            "value": 55
+          },
+          {
+            "color": "light-blue",
+            "index": 2,
+            "value": 60
+          },
+          {
+            "color": "super-light-blue",
+            "index": 3,
+            "value": 65
+          },
+          {
+            "color": "rgb(217, 217, 217)",
+            "index": 4,
+            "value": 70
+          },
+          {
+            "color": "super-light-orange",
+            "index": 5,
+            "value": 75
+          },
+          {
+            "color": "light-orange",
+            "index": 6,
+            "value": 80
+          },
+          {
+            "color": "semi-dark-orange",
+            "index": 7,
+            "value": 85
+          },
+          {
+            "color": "dark-orange",
+            "index": 8,
+            "value": 90
+          }
+        ],
+        "valueMappings": [],
+        "valueOptions": {
+          "decimals": 1,
+          "prefix": "",
+          "stat": "mean",
+          "suffix": "",
+          "unit": "farenheit"
+        }
+      },
+      "pluginVersion": "6.1.6",
+      "targets": [
         {
-          "alias": "Ambient Temperature",
           "groupBy": [
             {
               "params": [
@@ -123,9 +402,9 @@
           "measurement": "temperatures",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"ambient\") FROM \"temperatures\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "B",
+          "query": "SELECT \"AMBIENT\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -137,220 +416,17 @@
               },
               {
                 "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Glycol Temperature Setpoint",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "setpoints",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "GLYCOL"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
+                "type": "last"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Temperatures",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "Ambient": "#888888",
-        "Errors": "dark-red",
-        "Glycol Chiller": "dark-blue",
-        "Glycol Output Active": "dark-blue",
-        "Glycol Setpoint": "rgb(2, 0, 82)",
-        "errors.count": "dark-red",
-        "setpoints.mean": "light-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 0,
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 10
-      },
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "Glycol Output Active",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "outputs",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"glycolActive\")  * 5 FROM \"outputs\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "GLYCOL"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  " * 10"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Outputs",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "Ambient Temperature",
+      "type": "gauge"
     },
     {
       "aliasColors": {
@@ -368,9 +444,9 @@
       "fill": 0,
       "gridPos": {
         "h": 4,
-        "w": 12,
-        "x": 0,
-        "y": 14
+        "w": 7,
+        "x": 17,
+        "y": 0
       },
       "id": 6,
       "legend": {
@@ -474,49 +550,179 @@
       }
     },
     {
+      "aliasColors": {
+        "Ambient": "rgba(255, 255, 255, 0.3)",
+        "Ambient Temperature": "rgb(112, 112, 112)",
+        "Errors": "dark-red",
+        "F1 Max": "rgba(250, 100, 0, 0.3)",
+        "F2 Max": "rgba(250, 100, 0, 0.3)",
+        "Fermentor 1": "dark-yellow",
+        "Fermentor 1 Setpoint": "rgba(224, 180, 0, 0.3)",
+        "Fermentor 2": "dark-orange",
+        "Fermentor 2 Setpoint": "rgba(250, 100, 0, 0.3)",
+        "Fermentor 2 Temperature Setpoint": "dark-orange",
+        "Fermentor 3": "dark-red",
+        "Fermentor 3 Setpoint": "rgba(196, 22, 42, 0.3)",
+        "GL Max": "rgba(31, 96, 196, 0.3)",
+        "Glycol Chiller": "dark-blue",
+        "Glycol Chiller Setpoint": "rgba(31, 96, 196, 0.3)",
+        "Glycol Chiller Temperature": "dark-blue",
+        "Glycol Output Active": "semi-dark-blue",
+        "Glycol Setpoint": "rgb(26, 24, 110)",
+        "Glycol Temperature Setpoint": "rgb(18, 48, 79)",
+        "setpoints.mean": "light-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "description": "Changed to null values from \"null\" to \"connected\" temporarily",
+      "fill": 0,
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 12,
-        "y": 14
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 4
       },
-      "id": 5,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
       "links": [],
-      "options": {
-        "maxValue": "60",
-        "minValue": "49",
-        "orientation": "auto",
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "thresholds": [
-          {
-            "color": "semi-dark-blue",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "rgb(117, 117, 117)",
-            "index": 1,
-            "value": 50
-          },
-          {
-            "color": "rgb(204, 93, 46)",
-            "index": 2,
-            "value": 59
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 1,
-          "prefix": "",
-          "stat": "mean",
-          "suffix": "",
-          "unit": "none"
-        }
-      },
-      "pluginVersion": "6.1.6",
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
+          "alias": "Fermentor 1",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 1"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 2",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 2"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 3",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 3"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Glycol Chiller",
           "groupBy": [
             {
               "params": [
@@ -534,8 +740,6 @@
           "measurement": "temperatures",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"GLYCOL\" FROM \"temperatures\" ORDER BY DESC LIMIT 1",
-          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -548,20 +752,628 @@
               },
               {
                 "params": [],
-                "type": "last"
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Ambient",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "temperatures",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"ambient\") FROM \"temperatures\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "AMBIENT"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 1 Setpoint",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "setpoints",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 1"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 2 Setpoint",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "setpoints",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 2"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 3 Setpoint",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "setpoints",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "I",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 3"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Glycol Chiller Setpoint",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "setpoints",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "GLYCOL"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "F2 Max",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "setpoint_swing_sums",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "J",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 2"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "GL Max",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "setpoint_swing_sums",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "K",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "GLYCOL"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
               }
             ]
           ],
           "tags": []
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Glycol Chiller Temperature",
-      "type": "gauge"
+      "title": "Temperatures",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": "80",
+          "min": "20",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Ambient": "#888888",
+        "Errors": "dark-red",
+        "Fermentor 1 Active": "dark-yellow",
+        "Fermentor 2 Active": "dark-orange",
+        "Fermentor 3 Active": "dark-red",
+        "Glycol Chiller": "dark-blue",
+        "Glycol Chiller Active": "dark-blue",
+        "Glycol Output Active": "dark-blue",
+        "Glycol Pump Active": "dark-purple",
+        "Glycol Setpoint": "rgb(2, 0, 82)",
+        "errors.count": "dark-red",
+        "setpoints.mean": "light-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 0,
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Fermentor 1 Active",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "outputs",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 1"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "  * 10"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 2 Active",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "outputs",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 2"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " * 8"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Fermentor 3 Active",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "outputs",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "FERMENTOR 3"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " * 6"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Glycol Pump Active",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "outputs",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "PUMP"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  " * 4"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Glycol Chiller Active",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "outputs",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"glycolActive\")  * 5 FROM \"outputs\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "GLYCOL"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "  * 2"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Control Signals",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 18,
   "style": "dark",
   "tags": [],
@@ -569,7 +1381,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5d",
     "to": "now"
   },
   "timepicker": {
@@ -600,5 +1412,5 @@
   "timezone": "",
   "title": "Homebrew Club",
   "uid": "koF9U6mWk",
-  "version": 12
+  "version": 16
 }
